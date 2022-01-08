@@ -4,29 +4,35 @@ const { Schema } = mongoose;
 const RoomSchema = new Schema({
   name: String,
   hotel: { type: Schema.Types.ObjectId, ref: "Hotel" },
-  price: {
+  disc_price: {
     type: Number,
     required: true,
     min: 0,
     max: 99999
   },
-  occupants: {
+  full_price: {
+    type: Number,
+    required: true,
+    min: 0,
+    max: 99999
+  },
+  guests: {
     type: Number,
     required: true,
     min: 1,
     max: 4
   },
-  images: [String],
-  available: {
+  image: String,
+  remaining: {
     type: Number,
     required: true,
     min: 0,
     max: 100
   },
-  breakfast: Boolean,
+  breakfast: Number,
   view: {
     type: String,
-    enum: ["sea", "park", "city", "town", "countryside", "lake", "river", "mountain"]
+    enum: ["sea", "pool", "park", "city", "town", "countryside", "lake", "river", "mountain"]
   }
 })
 

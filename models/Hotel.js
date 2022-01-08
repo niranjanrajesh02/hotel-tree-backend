@@ -8,13 +8,20 @@ const HotelSchema = new Schema({
   orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
   reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
   avg_rating: { type: Number, min: 0, max: 5 },
+  rating_result: {
+    type: String,
+    enum: ["Perfect", "Excellent", "Very Good", "Good", "Satisfactory"]
+  },
   images: [String],
   saved: Number,
-  location: String,
+  city: String,
   addresss: String,
+  short_address: String,
+  distance_center: Number,
   tags: [{
     type: String,
-    enum: ["luxury", "resort", "budget", "pool", "bar", "room service", "free wifi", "parking", "gym", "pets", "restaurant"]
+    enum: ["pool", "bar", "room service", "free wifi", "parking",
+      "gym", "pets", "restaurant"]
   }]
 })
 
