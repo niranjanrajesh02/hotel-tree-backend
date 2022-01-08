@@ -116,8 +116,15 @@ router.post('/book', async (req, res) => {
     (roomToBook.remaining < 0) ? roomToBook.remaining = 0 : null;
     roomToBook.save();
     res.json(userToBook)
+  } catch (err) {
+    res.json({ error: err })
+  }
+})
 
-
+router.get('/recommended/:city', async (req, res) => {
+  try {
+    const cityHotels = await Hotel.find({ city: req.params.city }).limit(4);
+    console.log(cityHotels);
   } catch (err) {
     res.json({ error: err })
   }

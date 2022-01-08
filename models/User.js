@@ -8,7 +8,8 @@ const UserSchema = new Schema({
   saved: [{ type: Object }],
   reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
   contact_no: Number,
-  address: String
+  address: String,
+  last_city: String
 })
 
 module.exports = mongoose.model('User', UserSchema);

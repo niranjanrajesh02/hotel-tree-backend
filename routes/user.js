@@ -30,4 +30,16 @@ router.post('/', async (req, res) => {
   }
 })
 
+router.post('/update-city', async (req, res) => {
+  const { city_name, user_id } = req.body;
+  try {
+    const userToUpdate = await User.findById(user_id);
+    userToUpdate.last_city = city_name;
+    userToUpdate.save();
+    res.json(userToUpdate)
+  } catch (err) {
+    res.json({ error: err })
+  }
+})
+
 module.exports = router;
