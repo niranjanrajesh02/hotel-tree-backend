@@ -109,6 +109,7 @@ router.post('/book', async (req, res) => {
       city: roomToBook.hotel.city,
       image: roomToBook.image
     }
+
     userToBook.bookings.push(newBooking);
     userToBook.save();
     roomToBook.remaining -= 1;
