@@ -39,7 +39,27 @@ router.post('/', async (req, res) => {
     const savedRoom = await roomToSave.save();
     let hotelToUpdate = await Hotel.findById(hotel_id);
     hotelToUpdate.rooms.push(savedRoom._id);
-    hotelToUpdate.save();
+    await hotelToUpdate.save();
+    let hotelToPriceChange = await Hotel.findById(hotel_id).populate('rooms');
+    let min_price = 0;
+    if (!hotelToPriceChange.base_price) {
+      hotelToPriceChange.base_price = 0;
+    }
+
+    for (let r = 0; r < hotelToPriceChange.rooms.length; r++) {
+      if (r === 0) {
+        min_price = hotelToPriceChange.rooms[r].disc_price;
+      } else {
+        if (min_price > hotelToPriceChange.rooms[r].disc_price) {
+          min_price = hotelToPriceChange.rooms[r].disc_price
+        }
+      }
+    }
+    console.log(hotelToPriceChange.rooms);
+    console.log(hotelToPriceChange);
+    console.log(min_price);
+    hotelToPriceChange.base_price = min_price;
+    await hotelToPriceChange.save();
     res.json(savedRoom)
   } catch (err) {
     res.json({ error: err })

@@ -17,29 +17,29 @@ const handleQuerySort = (query) => {
   }
 }
 
-// router.get('/', async (req, res) => {
-//   const { minPrice = 0, maxPrice = 99999, minStars = 0, cid = null, sort = null } = req.query;
-//   const sortObj = handleQuerySort(sort);
-//   try {
-//     if (!cid || cid === "all") {
-//       const filteredProducts = await Product.find({
-//         price: { $lte: maxPrice, $gte: minPrice },
-//         avg_rating: { $gte: minStars }
-//       }).sort(sortObj).populate('seller');
-//       res.json(filteredProducts)
-//     }
-//     else {
-//       const filteredCollection = await Product.find({
-//         categories: cid,
-//         price: { $lte: maxPrice, $gte: minPrice },
-//         avg_rating: { $gte: minStars }
-//       }).sort(sortObj).populate('seller');
-//       res.json(filteredCollection)
-//     }
-//   } catch (err) {
-//     res.json({ message: err })
-//   }
-// })
+router.get('/sort', async (req, res) => {
+  const { minPrice = 0, minRating = 0, amenities = null, sort = null } = req.query;
+  const sortObj = handleQuerySort(sort);
+  try {
+    if (!amenities || amenities === []) {
+      const filteredHotels = await Hotel.find({
+        base_price: { $gte: minPrice },
+        avg_rating: { $gte: minRating }
+      }).sort(sortObj).populate('rooms');
+      res.json(filteredHotels)
+    }
+    else {
+      const filteredHotelsCollection = await Hotel.find({
+        price: { $lte: maxPrice, $gte: minPrice },
+        avg_rating: { $gte: minStars },
+        tags: { $all: amenities }
+      }).sort(sortObj).populate('rooms');
+      res.json(filteredHotelsCollection)
+    }
+  } catch (err) {
+    res.json({ message: err })
+  }
+})
 
 router.get('/', async (req, res) => {
   try {
@@ -60,7 +60,8 @@ router.post('/', async (req, res) => {
     address,
     short_address,
     distance_center,
-    tags
+    tags,
+    avg_rating: 0,
   })
   try {
     const savedHotel = await hotelToCreate.save();
