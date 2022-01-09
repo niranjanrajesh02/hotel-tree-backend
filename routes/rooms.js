@@ -55,9 +55,9 @@ router.post('/', async (req, res) => {
         }
       }
     }
-    console.log(hotelToPriceChange.rooms);
-    console.log(hotelToPriceChange);
-    console.log(min_price);
+    // console.log(hotelToPriceChange.rooms);
+    // console.log(hotelToPriceChange);
+    // console.log(min_price);
     hotelToPriceChange.base_price = min_price;
     await hotelToPriceChange.save();
     res.json(savedRoom)

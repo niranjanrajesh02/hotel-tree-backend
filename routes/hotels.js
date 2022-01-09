@@ -17,7 +17,7 @@ const handleQuerySort = (query) => {
   }
 }
 
-router.get('/sort', async (req, res) => {
+router.get('/', async (req, res) => {
   const { minPrice = 0, minRating = 0, amenities = null, sort = null } = req.query;
   const sortObj = handleQuerySort(sort);
   try {
@@ -30,8 +30,8 @@ router.get('/sort', async (req, res) => {
     }
     else {
       const filteredHotelsCollection = await Hotel.find({
-        price: { $lte: maxPrice, $gte: minPrice },
-        avg_rating: { $gte: minStars },
+        base_price: { $gte: minPrice },
+        avg_rating: { $gte: minRating },
         tags: { $all: amenities }
       }).sort(sortObj).populate('rooms');
       res.json(filteredHotelsCollection)
@@ -41,14 +41,14 @@ router.get('/sort', async (req, res) => {
   }
 })
 
-router.get('/', async (req, res) => {
-  try {
-    const foundHotels = await Hotel.find().populate('rooms');
-    res.json(foundHotels)
-  } catch (err) {
-    res.json({ error: err })
-  }
-})
+// router.get('/', async (req, res) => {
+//   try {
+//     const foundHotels = await Hotel.find().populate('rooms');
+//     res.json(foundHotels)
+//   } catch (err) {
+//     res.json({ error: err })
+//   }
+// })
 
 router.post('/', async (req, res) => {
   const { name, description, images, distance_center, city, short_address, address, tags } = req.body;
