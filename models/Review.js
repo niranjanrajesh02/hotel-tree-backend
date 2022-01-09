@@ -3,16 +3,17 @@ const { Schema } = mongoose;
 
 const ReviewSchema = new Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  user_name: String,
   date: {
     type: Date,
     default: Date.now()
   },
   hotel: { type: mongoose.Schema.Types.ObjectId, ref: "Hotel" },
-  reviewTitle: {
+  review_title: {
     type: String,
     required: true
   },
-  reviewText: {
+  review_text: {
     type: String,
     required: true
   },

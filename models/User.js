@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 
 const UserSchema = new Schema({
   user_name: String,
+  user_id: String,
   email: String,
   bookings: [{ type: Object }],
   saved: [{ type: Object }],

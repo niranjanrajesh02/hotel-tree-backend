@@ -21,7 +21,7 @@ const HotelSchema = new Schema({
   base_price: Number,
   tags: [{
     type: String,
-    enum: ["pool", "bar", "room service", "free wifi", "parking",
+    enum: ["swimming_pool", "bar", "room service", "free wifi", "parking",
       "gym", "pets", "restaurant"]
   }]
 })
