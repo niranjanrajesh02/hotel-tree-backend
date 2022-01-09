@@ -172,19 +172,17 @@ router.post('/review', async (req, res) => {
     let sum = 0; let new_avg = 0;
     const hotelToUpdate = await Hotel.findById(hotel_id).populate('reviews')
     for (let r = 0; r < hotelToUpdate.reviews.length; r++) {
-      console.log(hotelToUpdate.reviews[r]);
+      // console.log(hotelToUpdate.reviews[r]);
       sum += hotelToUpdate.reviews[r].rating
-      console.log(sum);
+      // console.log(sum);
     }
     new_avg = sum / hotelToUpdate.reviews.length
-    console.log(new_avg);
+    // console.log(new_avg);
     let new_rating_result = rating_result_finder(new_avg);
-    console.log(new_rating_result)
+    // console.log(new_rating_result)
     hotelToUpdate.avg_rating = new_avg;
     hotelToUpdate.rating_result = new_rating_result;
     hotelToUpdate.save();
-
-
     res.json(reviewToCreate);
   } catch (err) {
     res.json({ error: err })

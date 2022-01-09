@@ -14,12 +14,13 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  const { user_name, email, address, contact_no } = req.body;
+  const { user_name, email, address, contact_no, user_id } = req.body;
   const newUser = new User({
     user_name,
     email,
     address,
-    contact_no
+    contact_no,
+    user_id
   })
   try {
     const savedUser = await newUser.save();
@@ -40,6 +41,21 @@ router.post('/update-city', async (req, res) => {
   } catch (err) {
     res.json({ error: err })
   }
+})
+
+router.get('/verify/:user_id', async (req, res) => {
+  try {
+    const userFound = await User.findOne({ user_id: req.params.user_id })
+    res.json(userFound)
+  } catch (err) {
+    res.json({ error: err })
+  }
+})
+
+router.patch('/details', async (req, res) => {
+  const { user_name, contact_no, address, email, user_id } = req.body;
+  const foundUser = await User.findByIdAndUpdate(user_id, { user_name, contact_no, address, email }, { new: true });
+  res.json(foundUser);
 })
 
 module.exports = router;
