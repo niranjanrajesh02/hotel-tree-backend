@@ -22,20 +22,34 @@ router.get('/', async (req, res) => {
   const { minPrice = 0, minRating = 0, amenities = null, sort = null, city = null } = req.query;
   const sortObj = handleQuerySort(sort);
   try {
-    if (!amenities || amenities === []) {
+    if (!city || !amenities || amenities === []) {
       const filteredHotels = await Hotel.find({
         base_price: { $gte: minPrice },
         avg_rating: { $gte: minRating },
-        city: city,
       }).sort(sortObj).populate('rooms');
       res.json(filteredHotels)
     }
-    else {
+    else if (!city && amenities) {
       const filteredHotelsCollection = await Hotel.find({
         base_price: { $gte: minPrice },
         avg_rating: { $gte: minRating },
         tags: { $all: amenities },
-        city: city,
+      }).sort(sortObj).populate('rooms');
+      res.json(filteredHotelsCollection)
+    }
+    else if (city && !amenities) {
+      const filteredHotelsCollection = await Hotel.find({
+        base_price: { $gte: minPrice },
+        avg_rating: { $gte: minRating },
+        city: city
+      }).sort(sortObj).populate('rooms');
+      res.json(filteredHotelsCollection)
+    } else {
+      const filteredHotelsCollection = await Hotel.find({
+        base_price: { $gte: minPrice },
+        avg_rating: { $gte: minRating },
+        tags: { $all: amenities },
+        city: city
       }).sort(sortObj).populate('rooms');
       res.json(filteredHotelsCollection)
     }
