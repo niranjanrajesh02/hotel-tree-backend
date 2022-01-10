@@ -86,11 +86,12 @@ router.post('/save', async (req, res) => {
   const { hotel_id, user_id } = req.body;
   try {
     let hotelToSave = await Hotel.findById(hotel_id);
-    let userToSave = await User.findById(user_id)
+    let userToSave = await User.findOne({ user_id })
     let newSavedHotel = {
       hotel_name: hotelToSave.name,
       city: hotelToSave.city,
-      image: hotelToSave.images[0]
+      image: hotelToSave.images[0],
+      hotel_id: hotel_id
     }
 
     userToSave.saved.push(newSavedHotel);
@@ -112,9 +113,10 @@ router.post('/book', async (req, res) => {
   const { room_id, user_id, rooms } = req.body;
   try {
     let roomToBook = await Room.findById(room_id).populate("hotel");
-    let userToBook = await User.findById(user_id)
+    let userToBook = await User.findOne({ user_id })
     const newBooking = {
       hotel_name: roomToBook.hotel.name,
+      hotel_id: roomToBook.hotel._id,
       room_name: roomToBook.name,
       rooms,
       total_cost: rooms * roomToBook.disc_price,
@@ -136,8 +138,9 @@ router.post('/book', async (req, res) => {
 
 router.get('/recommended/:city', async (req, res) => {
   try {
-    const cityHotels = await Hotel.find({ city: req.params.city }).limit(4);
-    console.log(cityHotels);
+    const cityHotels = await Hotel.find({ city: req.params.city }).limit(4).sort({ name: -1 }).populate('rooms');
+    // console.log(cityHotels);
+    res.json(cityHotels)
   } catch (err) {
     res.json({ error: err })
   }

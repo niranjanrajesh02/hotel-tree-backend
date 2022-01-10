@@ -10,7 +10,7 @@ const HotelSchema = new Schema({
   avg_rating: { type: Number, min: 0, max: 5 },
   rating_result: {
     type: String,
-    enum: ["Perfect", "Excellent", "Very Good", "Good", "Satisfactory"]
+    enum: ["Perfect", "Excellent", "Very Good", "Good", "Satisfactory", "Fair"]
   },
   images: [String],
   saved: Number,
